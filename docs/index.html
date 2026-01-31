@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BasicMirror - Simple Android Screen Mirror</title>
+    <meta name="description" content="Lightweight GUI for scrcpy - Mirror your Android device to PC with one click">
+    <meta name="keywords" content="scrcpy, android, screen mirror, screen cast, windows, gui">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #1a1b26;
+            --bg-panel: #24283b;
+            --bg-input: #343850;
+            --accent-purple: #7c3aed;
+            --accent-indigo: #4f46e5;
+            --accent-teal: #14b8a6;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-indigo) 100%);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 4px 20px rgba(0,0,0,0.3));
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 8px;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--accent-purple);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--text-primary);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 48px;
+            color: var(--text-primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg-panel);
+            padding: 32px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-purple);
+            box-shadow: 0 12px 40px rgba(124, 58, 237, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: var(--bg-panel);
+            padding: 80px 20px;
+        }
+
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-teal));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+        }
+
+        /* Download Section */
+        .download {
+            padding: 80px 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .download-box {
+            background: var(--bg-panel);
+            padding: 48px;
+            border-radius: 24px;
+            border: 2px solid var(--accent-purple);
+        }
+
+        .download h2 {
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+        }
+
+        .download p {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .file-size {
+            display: inline-block;
+            background: var(--bg-input);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--accent-teal);
+            margin-top: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-panel);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid var(--bg-input);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        footer a {
+            color: var(--accent-purple);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                display: block;
+                margin: 12px auto;
+                max-width: 280px;
+            }
+
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .step-number {
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="screen" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#14b8a6"/>
+                        <stop offset="100%" style="stop-color:#0d9488"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="48" fill="rgba(255,255,255,0.15)"/>
+                <rect x="30" y="15" width="40" height="70" rx="6" ry="6" fill="#1a1b26" stroke="#f8fafc" stroke-width="2"/>
+                <rect x="34" y="22" width="32" height="52" rx="2" ry="2" fill="url(#screen)"/>
+                <ellipse cx="50" cy="80" rx="4" ry="2" fill="#4f46e5"/>
+                <path d="M 75 35 L 85 50 L 75 65" stroke="#f8fafc" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M 25 35 L 15 50 L 25 65" stroke="#f8fafc" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+            <h1>BasicMirror</h1>
+            <p>Simple & Lightweight Android Screen Mirror for Windows</p>
+            <div>
+                <a href="https://github.com/anhhackta/BasicMirror/releases" class="btn btn-primary">⬇ Download Now</a>
+                <a href="https://github.com/anhhackta/BasicMirror" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <h2 class="section-title">✨ Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>One-Click Mirroring</h3>
+                <p>Just connect your device and click Mirror. No command line, no configuration.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Multi-Device Support</h3>
+                <p>Mirror multiple Android devices simultaneously via USB or WiFi.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎬</div>
+                <h3>Screen Recording</h3>
+                <p>Record your device screen with Start/Stop controls. Save as MP4 or MKV.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Multi-Language</h3>
+                <p>Available in English and Vietnamese. Easy to add more languages.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📁</div>
+                <h3>Auto-Download</h3>
+                <p>Automatically downloads scrcpy from official repository on first launch.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightweight</h3>
+                <p>Only ~50KB! Minimal footprint, maximum performance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <h2 class="section-title">🛠️ How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Download BasicMirror.exe</h3>
+                    <p>Just one small file (~50KB). No installation required.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Run & Accept scrcpy Download</h3>
+                    <p>On first launch, it will download scrcpy (~15MB) from the official repository.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Connect Your Device</h3>
+                    <p>Enable USB debugging, connect via USB, and click Mirror!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download -->
+    <section class="download">
+        <div class="download-box">
+            <h2>Ready to Mirror?</h2>
+            <p>Download BasicMirror and start mirroring your Android device in seconds.</p>
+            <a href="https://github.com/anhhackta/BasicMirror/releases" class="btn btn-primary">⬇ Download BasicMirror v1.0</a>
+            <div class="file-size">📦 ~50KB • Windows 7/8/10/11</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            BasicMirror is a GUI wrapper for <a href="https://github.com/Genymobile/scrcpy">scrcpy</a> by Genymobile.<br>
+            Made with ❤️ by <a href="https://github.com/anhhackta">anhhackta</a> | 
+            <a href="https://github.com/anhhackta/BasicMirror">GitHub</a>
+        </p>
+    </footer>
+</body>
+</html>

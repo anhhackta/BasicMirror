@@ -13,7 +13,7 @@ namespace ScrcpyGUI
                 {
                     // App
                     { "app_title", "ScrcpyGUI" },
-                    { "app_version", "v3.0" },
+                    { "app_version", "v1.0" },
                     
                     // Sections
                     { "section_devices", "DEVICES" },
