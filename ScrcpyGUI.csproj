@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <AssemblyName>ScrcpyGUI</AssemblyName>
+    <RootNamespace>ScrcpyGUI</RootNamespace>
+    <Version>1.0.0</Version>
+    <Authors>Scrcpy GUI Contributors</Authors>
+    <Description>Android Mirror GUI for scrcpy</Description>
+    <Copyright>MIT License</Copyright>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,22 @@
+# Build output
+*.exe
+*.pdb
+*.dll
+
+# Scrcpy binaries (downloaded automatically)
+scrcpy/
+
+# User data
+devices.json
+*.txt
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
